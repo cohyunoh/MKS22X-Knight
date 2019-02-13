@@ -88,6 +88,7 @@ public class KnightBoard{
       return r - 2 >= 0 && c - 1 >= 0 && data[r - 2][c - 1] == 0;
     }
   }
+  private boolean addKnight
   private boolean canMove(int r, int c){
     for(int i = 0; i < 8; i++){
       if(canMove(r,c,i)){
@@ -99,8 +100,14 @@ public class KnightBoard{
   private boolean solveH(int row ,int col, int level){
     if(level == data.length * data[0].length){
       return true;
-    }else if{
+    }else if(!canMove(r,c)){
+      return false;
+    }else{
+      for(int i = 0; i < 8; i++){
+        if(canMove(r,c,i)){
 
+        }
+      }
     }
   }
 }
