@@ -52,4 +52,15 @@ public class KnightBoard{
     return true;
   }
 
+  public boolean solve(int startingRow, int startingCol){
+    if(!isEmpty()){
+      throw new IllegalStateException("The Board is Already Solved");
+    }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
+      throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
+    }else{
+      return solveH(startingRow, startingcol, 1);
+    }
+  }
+  
+
 }
