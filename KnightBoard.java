@@ -1,6 +1,9 @@
 public class KnightBoard{
   private int[][] data;
   public KnightBoard(int l, int w){
+    if(l <= 0 || w <= 0){
+      throw new IllegalArgumentException("Not Viable Dimensions for a Board");
+    }
     data = new int[l][w];
   }
   public String toString(){
@@ -38,4 +41,15 @@ public class KnightBoard{
     }
     return ans;
   }
+  private boolean isEmpty(){
+    for(int r = 0; r < data.length; r++){
+      for(int c = 0; c < data[r].length; c++){
+        if(data[r][c] != 0){
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
 }
