@@ -2,12 +2,14 @@ public class KnightBoard{
   private int[][] data;
   private int currentR;
   private int currentC;
+
   public KnightBoard(int l, int w){
     if(l <= 0 || w <= 0){
       throw new IllegalArgumentException("Not Viable Dimensions for a Board");
     }
     data = new int[l][w];
   }
+
   public String toString(){
     String ans = "";
     if((data.length * data[0].length) % 10 == (data.length * data[0].length)){
@@ -43,6 +45,7 @@ public class KnightBoard{
     }
     return ans;
   }
+
   private boolean isEmpty(){
     for(int r = 0; r < data.length; r++){
       for(int c = 0; c < data[r].length; c++){
@@ -93,7 +96,8 @@ public class KnightBoard{
     }
     return false;
   }
-  private boolean addKnight(int r, int c, int direction, int level){
+
+  private boolean moveKnight(int r, int c, int direction, int level){
     if(direction == 0 && canMove(r,c,direction)){
       data[r-2][c+1] = level;
       currentR -= 2;
@@ -144,6 +148,57 @@ public class KnightBoard{
     }
     return false;
   }
+
+  public boolean retractKnight(int r, int c, int direction){
+    if(r<data.length && r>=0 && c<data[r].length && c>=0){
+      if(direction == 0){
+        data[r-2][c+1] = 0;
+        currentR += 2;
+        currentC -= 1;
+        return true;
+      }else if(direction == 1){
+        data[r-1][c+2] = 0;
+        currentR += 1;
+        currentC -= 2;
+        return true;
+      }else if(direction == 2){
+        data[r+1][c+2] = 0;
+        currentR -= 1;
+        currentC -= 2;
+        return true;
+      }else if(direction == 3){
+        data[r+2][c+1] = 0;
+        currentR -= 2;
+        currentC -= 1;
+        return true;
+      }else if(direction == 4){
+        data[r+2][c-1] = 0;
+        currentR -= 2;
+        currentC += 1;
+        return true;
+      }else if(direction == 5){
+        data[r+1][c-2] = 0;
+        currentR -= 1;
+        currentC += 2;
+        return true;
+      }else if(direction == 6){
+        data[r-1][c-2] = 0;
+        currentR += 1;
+        currentC += 2;
+        return true;
+      }else if(direction == 7){
+        data[r-2][c-1] = 0;
+        currentR += 2;
+        currentC += 1;
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
   private boolean canMove(int r, int c){
     for(int i = 0; i < 8; i++){
       if(canMove(r,c,i)){
@@ -152,6 +207,7 @@ public class KnightBoard{
     }
     return false;
   }
+
   private boolean solveH(int row ,int col, int level){
     if(level == data.length * data[0].length){
       return true;
@@ -159,14 +215,15 @@ public class KnightBoard{
       return false;
     }else{
       for(int i = 0; i < 8; i++){
-        if(addKnight(row,col,i,level)){
+        if(moveKnight(row,col,i,level)){
           if(solveH(currentR, currentC, level + 1)){
             return true;
           }else{
-
+            retractKnight(row,col,i);
           }
         }
       }
     }
+    return false;
   }
 }
