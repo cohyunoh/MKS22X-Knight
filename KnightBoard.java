@@ -65,6 +65,7 @@ public class KnightBoard{
     }else{
       currentR = startingRow;
       currentC = startingCol;
+      data[startingRow][startingCol] = 1;
       return solveH(startingRow, startingCol, 1);
     }
   }
