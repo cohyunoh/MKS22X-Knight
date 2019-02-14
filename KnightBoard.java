@@ -1,5 +1,7 @@
 public class KnightBoard{
   private int[][] data;
+  private int currentR;
+  private int currentC;
   public KnightBoard(int l, int w){
     if(l <= 0 || w <= 0){
       throw new IllegalArgumentException("Not Viable Dimensions for a Board");
@@ -58,6 +60,8 @@ public class KnightBoard{
     }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
+      currentR = startingRow;
+      currentC = startingCol;
       return solveH(startingRow, startingCol, 1);
     }
   }
@@ -73,13 +77,13 @@ public class KnightBoard{
       return r + 1 < data.length && c + 2 < data[r].length && data[r + 1][c + 2] == 0;
     }
     if(direction == 3){
-      return r + 2 < board.length && c + 1 < data[r].length && data[r + 2][c + 1] == 0;
+      return r + 2 < data.length && c + 1 < data[r].length && data[r + 2][c + 1] == 0;
     }
     if(direction == 4){
-      return r + 2 < board.length && c - 1 >= 0 && data[r + 2][c - 1] == 0;
+      return r + 2 < data.length && c - 1 >= 0 && data[r + 2][c - 1] == 0;
     }
     if(direction == 5){
-      return r + 1 < board.length && c - 2 >= 0 && data[r + 1][c - 2] == 0;
+      return r + 1 < data.length && c - 2 >= 0 && data[r + 1][c - 2] == 0;
     }
     if(direction == 6){
       return r - 1 >= 0 && c - 2 >= 0 && data[r - 1][c - 2] == 0;
@@ -87,8 +91,59 @@ public class KnightBoard{
     if(direction == 7){
       return r - 2 >= 0 && c - 1 >= 0 && data[r - 2][c - 1] == 0;
     }
+    return false;
   }
-  private boolean addKnight
+  private boolean addKnight(int r, int c, int direction, int level){
+    if(direction == 0 && canMove(r,c,direction)){
+      data[r-2][c+1] = level;
+      currentR -= 2;
+      currentC += 1;
+      return true;
+    }
+    if(direction == 1 && canMove(r,c,direction)){
+      data[r-1][c+2] = level;
+      currentR -= 1;
+      currentC += 2;
+      return true;
+    }
+    if(direction == 2 && canMove(r,c,direction)){
+      data[r+1][c+2] = level;
+      currentR += 1;
+      currentC += 2;
+      return true;
+    }
+    if(direction == 3 && canMove(r,c,direction)){
+      data[r+2][c+1] = level;
+      currentR += 2;
+      currentC += 1;
+      return true;
+    }
+    if(direction == 4 && canMove(r,c,direction)){
+      data[r+2][c-1] = level;
+      currentR += 2;
+      currentC -= 1;
+      return true;
+    }
+    if(direction == 5 && canMove(r,c,direction)){
+      data[r+1][c-2] = level;
+      currentR += 1;
+      currentC -= 2;
+      return true;
+    }
+    if(direction == 6 && canMove(r,c,direction)){
+      data[r-1][c-2] = level;
+      currentR -= 1;
+      currentC -= 2;
+      return true;
+    }
+    if(direction == 7 && canMove(r,c,direction)){
+      data[r-2][c-1] = level;
+      currentR -= 2;
+      currentC -= 1;
+      return true;
+    }
+    return false;
+  }
   private boolean canMove(int r, int c){
     for(int i = 0; i < 8; i++){
       if(canMove(r,c,i)){
@@ -100,12 +155,16 @@ public class KnightBoard{
   private boolean solveH(int row ,int col, int level){
     if(level == data.length * data[0].length){
       return true;
-    }else if(!canMove(r,c)){
+    }else if(!canMove(row,col)){
       return false;
     }else{
       for(int i = 0; i < 8; i++){
-        if(canMove(r,c,i)){
+        if(addKnight(row,col,i,level)){
+          if(solveH(currentR, currentC, level + 1)){
+            return true;
+          }else{
 
+          }
         }
       }
     }
