@@ -57,6 +57,17 @@ public class KnightBoard{
     return true;
   }
 
+  private boolean notSolved(){
+    for(int r = 0; r < data.length; r++){
+      for(int c = 0; c < data[r].length; c++){
+        if(data[r][c] == 0){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public boolean solve(int startingRow, int startingCol){
     if(!isEmpty()){
       throw new IllegalStateException("The Board is Already Solved");
@@ -211,7 +222,7 @@ public class KnightBoard{
 
   private boolean solveH(int row ,int col, int level){
     if(level == data.length * data[0].length){
-      return true;
+      return !notSolved();
     }else if(!canMove(row,col)){
       return false;
     }else{
