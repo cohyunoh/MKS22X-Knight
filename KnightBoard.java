@@ -221,8 +221,8 @@ public class KnightBoard{
   }
 
   private boolean solveH(int row ,int col, int level){
-    if(level == data.length * data[0].length){
-      return !notSolved();
+    if(level == (data.length * data[0].length)){
+      return true;
     }else if(!canMove(row,col)){
       return false;
     }else{
