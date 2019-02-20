@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class KnightBoard{
   private int[][] data;
   private int[] moves = {-2,1,-1,2,1,2,2,1,2,-1,1,-2,-1,-2,-2,-1};
@@ -135,5 +136,26 @@ public class KnightBoard{
       }
       return solutions;
     }
+  }
+
+  private void clear(){
+    for(int r = 0; r < data.length; r++){
+      for(int c = 0; c < data[r].length; c++){
+        data[r][c] = 0;
+      }
+    }
+  }
+
+  private ArrayList<Integer> possibleMoves(int row, int col){
+    ArrayList<Integer> list = new ArrayList<Integer>();
+    for(int i = 0; i < 16; i+=2){
+      int newR = row + moves[i];
+      int newC = col + moves[i + 1];
+      if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
+        list.add(moves[i]);
+        list.add(moves[i+1]);
+      }
+    }
+    return list;
   }
 }
