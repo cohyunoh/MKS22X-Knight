@@ -82,6 +82,7 @@ public class KnightBoard{
           if(solveH(row + moves[i], col + moves[i+1], level + 1)){
             return true;
           }
+          data[row + moves[i]][col + moves[i+1]] = 0;
         }
       }
     }
