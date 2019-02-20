@@ -97,16 +97,16 @@ public class KnightBoard{
           }
           retract(row + moves[i], col + moves[i+1], level + 1);
         }
-        System.out.println("false statement 1");
-        System.out.println("level:" + level);
+        //System.out.println("false statement 1");
+        //System.out.println("level:" + level);
         return false;
       }
     }
-    System.out.println("false statement 2");
-    System.out.println("level:" + level);
+    //System.out.println("false statement 2");
+    //System.out.println("level:" + level);
     return false;
   }
-  /*
+
   public int countSolutions(int startingRow, int startingCol){
     if(!isEmpty()){
       throw new IllegalStateException("The Board is Already Solved");
@@ -116,23 +116,22 @@ public class KnightBoard{
       return countSolutionsHelper(startingRow, startingCol, 1, 0);
     }
   }
+
   private int countSolutionsHelper(int row, int col, int level, int solutions){
     if(level > (data.length * data[0].length)){
-      solutions += 1;
-      return solutions;
-    }else if(!canMove(row,col)){
+      solutions ++;
       return solutions;
     }else{
-      for(int i = 0; i < 8; i++){
-        if(moveKnight(row,col,i,level)){
-          if(countSolutionsHelper(currentR, currentC, level + 1, solutions) > solutions){
+      if(move(row,col,level)){
+        for(int i = 0; i < 16; i+=2){
+          if(countSolutionsHelper(row + moves[i], col + moves[i+1], level + 1, solutions) > solutions){
             solutions ++;
           }
-          retractKnight(row,col,i);
+          retract(row + moves[i], col + moves[i+1], level + 1);
         }
+        return solutions;
       }
     }
     return solutions;
   }
-*/
 }
