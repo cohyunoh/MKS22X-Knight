@@ -261,7 +261,7 @@ public class KnightBoard{
     }else{
       for(int i = 0; i < 8; i++){
         if(moveKnight(row,col,i,level)){
-          if(countSolutionsHelper(currentR, currentC, level + 1, solutions) >= solutions){
+          if(countSolutionsHelper(currentR, currentC, level + 1, solutions) > solutions){
             solutions ++;
           }else{
             retractKnight(row,col,i);
