@@ -248,7 +248,28 @@ public class KnightBoard{
       currentR = startingRow;
       currentC = startingCol;
       data[startingRow][startingCol] = 1;
-      return
+      return countSolutionsHelper(startingRow, startingCol, 2, 0);
+    }
+  }
+
+  private int countSolutionsHelper(int row, int col, int level, int solutions){
+    if(level == (data.length * data[0].length)){
+      solutions += 1;
+      return solutions;
+    }else if(!canMove(row,col)){
+      return solutions;
+    }else{
+      for(int i = 0; i < 8; i++){
+        if(moveKnight(row,col,i,level)){
+          if(countSolutionsHelper(currentR, currentC, level + 1, solutions) >= solutions){
+            solutions ++;
+          }else{
+            retractKnight(row,col,i);
+          }
+        }
+      }
+    }
+    return 0;
   }
 
 }
