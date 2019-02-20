@@ -68,8 +68,13 @@ public class KnightBoard{
     }
   }
 
-  private boolean canMove(int newR, int newC){
-    return newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0;
+  private boolean move(int newR, int newC, int level){
+    if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
+      data[newR][newC] = level;
+      return true;
+    }else{
+      return false;
+    }
   }
 
   private boolean solveH(int row ,int col, int level){
@@ -78,14 +83,14 @@ public class KnightBoard{
     }else{
       data[row][col] = level;
       for(int i = 0; i < 8; i+=2){
-        if(canMove(row + moves[i], col + moves[i+1])){
+        if(move(row + moves[i], col + moves[i+1], level + 1)){
           if(solveH(row + moves[i], col + moves[i+1], level + 1)){
             return true;
-          }else{
-            data[row + moves[i]][col + moves[i+1]] = 0;
           }
+          data[row + moves[i]][col + moves[i+1]] = 0;
         }
       }
+      data[row][col] = 0;
       return false;
     }
   }
