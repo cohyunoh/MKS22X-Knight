@@ -92,11 +92,14 @@ public class KnightBoard{
       return true;
     }else{
       if(move(row,col,level)){
-        for(int i = 0; i < 16; i+=2){
-          if(solveH(row + moves[i], col + moves[i+1], level + 1)){
+        ArrayList<Integer> newCoords = possibleMoves(row, col);
+        for(int i = 0; i < newCoords.size(); i+=2){
+          int newR = row + newCoords.get(i);
+          int newC = col + newCoords.get(i + 1);
+          if(solveH(newR, newC, level + 1)){
             return true;
           }
-          retract(row + moves[i], col + moves[i+1], level + 1);
+          retract(newR, newC, level + 1);
         }
         //System.out.println("false statement 1");
         //System.out.println("level:" + level);
@@ -124,9 +127,10 @@ public class KnightBoard{
       solutions ++;
       return solutions;
     }else{
-      for(int i = 0; i < 16; i+=2){
-        int newR = row + moves[i];
-        int newC = col + moves[i+1];
+      ArrayList<Integer> newCoords = possibleMoves(row, col);
+      for(int i = 0; i < newCoords.size(); i+=2){
+        int newR = row + newCoords.get(i);
+        int newC = col + newCoords.get(i + 1);
         if(move(newR,newC,level+1)){
           if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
             solutions = countSolutionsHelper(newR,newC,level+1,solutions);
