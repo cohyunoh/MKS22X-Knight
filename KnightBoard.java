@@ -84,8 +84,8 @@ public class KnightBoard{
           }
         }
       }
-      return false;
     }
+    return false;
   }
   /*
   public int countSolutions(int startingRow, int startingCol){
