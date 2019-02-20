@@ -113,27 +113,26 @@ public class KnightBoard{
     }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
-      return countSolutionsHelper(startingRow, startingCol, 1, 0);
+      data[startingRow][startingCol] = 1;
+      return countSolutionsHelper(startingRow, startingCol, 2, 0);
     }
   }
 
   private int countSolutionsHelper(int row, int col, int level, int solutions){
-    if(level > (data.length * data[0].length)){
+    if(level > data.length * data[row].length){
       solutions ++;
-    //  System.out.println("solutions 2");
-    //  System.out.println("level:" + level);
       return solutions;
     }else{
-      if(move(row,col,level)){
-        for(int i = 0; i < 16; i+=2){
-          if(countSolutionsHelper(row + moves[i], col + moves[i+1], level + 1, solutions) > solutions){
-            solutions = countSolutionsHelper(row + moves[i], col + moves[i+1], level + 1, solutions);
+      for(int i = 0; i < 16; i+=2){
+        int newR = row + moves[i];
+        int newC = col + moves[i+1];
+        if(move(newR,newC,level+1)){
+          if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
+            solutions = countSolutionsHelper(newR,newC,level+1,solutions);
           }
-          retract(row + moves[i], col + moves[i+1], level + 1);
+          retract(newR,newC,level+1);
         }
       }
-      //System.out.println("solutions 2");
-      //System.out.println("level:" + level);
       return solutions;
     }
   }
