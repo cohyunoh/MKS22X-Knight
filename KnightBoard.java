@@ -78,8 +78,8 @@ public class KnightBoard{
     }else{
       data[row][col] = level;
       for(int i = 0; i < 8; i+=2){
-        if(canMove(row += moves[i], col += moves[i+1])){
-          if(solveH(row += moves[i], col += moves[i+1], level + 1)){
+        if(canMove(row + moves[i], col + moves[i+1])){
+          if(solveH(row + moves[i], col + moves[i+1], level + 1)){
             return true;
           }
         }
