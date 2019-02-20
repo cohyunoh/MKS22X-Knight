@@ -221,7 +221,7 @@ public class KnightBoard{
   }
 
   private boolean solveH(int row ,int col, int level){
-    if(level == (data.length * data[0].length)){
+    if(level > (data.length * data[0].length)){
       return true;
     }else if(!canMove(row,col)){
       return false;
@@ -253,7 +253,7 @@ public class KnightBoard{
   }
 
   private int countSolutionsHelper(int row, int col, int level, int solutions){
-    if(level == (data.length * data[0].length)){
+    if(level > (data.length * data[0].length)){
       solutions += 1;
       return solutions;
     }else if(!canMove(row,col)){
@@ -263,13 +263,12 @@ public class KnightBoard{
         if(moveKnight(row,col,i,level)){
           if(countSolutionsHelper(currentR, currentC, level + 1, solutions) > solutions){
             solutions ++;
-          }else{
-            retractKnight(row,col,i);
           }
+          retractKnight(row,col,i);
         }
       }
     }
-    return 0;
+    return solutions;
   }
 
 }
