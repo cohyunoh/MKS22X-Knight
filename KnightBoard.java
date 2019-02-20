@@ -1,6 +1,6 @@
 public class KnightBoard{
   private int[][] data;
-  private int[] moves = {-2,1,-1,2,1,2,2,1,2,-1,1,-2,-1,-2,-2,-1}
+  private int[] moves = {-2,1,-1,2,1,2,2,1,2,-1,1,-2,-1,-2,-2,-1};
 
   public KnightBoard(int l, int w){
     if(l <= 0 || w <= 0){
@@ -64,10 +64,7 @@ public class KnightBoard{
     }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
-      currentR = startingRow;
-      currentC = startingCol;
-      data[startingRow][startingCol] = 1;
-      return solveH(startingRow, startingCol, 2);
+      return solveH(startingRow, startingCol, 1);
     }
   }
 
@@ -90,7 +87,7 @@ public class KnightBoard{
       return false;
     }
   }
-
+  /*
   public int countSolutions(int startingRow, int startingCol){
     if(!isEmpty()){
       throw new IllegalStateException("The Board is Already Solved");
@@ -100,7 +97,6 @@ public class KnightBoard{
       return countSolutionsHelper(startingRow, startingCol, 1, 0);
     }
   }
-
   private int countSolutionsHelper(int row, int col, int level, int solutions){
     if(level > (data.length * data[0].length)){
       solutions += 1;
@@ -119,5 +115,5 @@ public class KnightBoard{
     }
     return solutions;
   }
-
+*/
 }
