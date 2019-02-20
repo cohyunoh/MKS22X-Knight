@@ -81,17 +81,17 @@ public class KnightBoard{
     if(level > (data.length * data[0].length)){
       return true;
     }else{
-      data[row][col] = level;
-      for(int i = 0; i < 8; i+=2){
-        if(move(row + moves[i], col + moves[i+1], level + 1)){
-          if(solveH(row + moves[i], col + moves[i+1], level + 1)){
+      if(move(row,col,level)){
+        boolean canMove = false;
+        for(int i = 0; i < 8; i+=2){
+          if(solveH(row + moves[i], col + moves[i+1], level++)){
             return true;
           }
-          data[row + moves[i]][col + moves[i+1]] = 0;
         }
+        return false;
+      }else{
+        return false;
       }
-      data[row][col] = 0;
-      return false;
     }
   }
   /*
