@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 public class KnightBoard{
   private int[][] data;
+  private int[][] optData;
   private int[] moves = {-2,1,-1,2,1,2,2,1,2,-1,1,-2,-1,-2,-2,-1};
 
   public KnightBoard(int l, int w){
@@ -8,6 +9,7 @@ public class KnightBoard{
       throw new IllegalArgumentException("Not Viable Dimensions for a Board");
     }
     data = new int[l][w];
+    createOptData();
   }
 
   public String toString(){
@@ -154,4 +156,19 @@ public class KnightBoard{
     }
     return list;
   }
+
+  private void createOptData(){
+    optData = new int[data.length][data[0].length];
+    for(int r = 0; r < data.length; r++){
+      for(int c = 0; c < data[r].length; c++){
+        ArrayList<Integer> list = possibleMoves(r,c);
+        optData[r][c] = list.size();
+      }
+    }
+  }
+  /*
+  private ArrayList<Integer> orderList(int row, int col, ArrayList<Integer> list){
+    ArrayList<Integer> ans = new ArrayList<Integer>();
+
+  } */
 }
