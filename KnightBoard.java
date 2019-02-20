@@ -138,14 +138,6 @@ public class KnightBoard{
     }
   }
 
-  private void clear(){
-    for(int r = 0; r < data.length; r++){
-      for(int c = 0; c < data[r].length; c++){
-        data[r][c] = 0;
-      }
-    }
-  }
-
   private ArrayList<Integer> possibleMoves(int row, int col){
     ArrayList<Integer> list = new ArrayList<Integer>();
     for(int i = 0; i < 16; i+=2){
