@@ -120,18 +120,21 @@ public class KnightBoard{
   private int countSolutionsHelper(int row, int col, int level, int solutions){
     if(level > (data.length * data[0].length)){
       solutions ++;
+    //  System.out.println("solutions 2");
+    //  System.out.println("level:" + level);
       return solutions;
     }else{
       if(move(row,col,level)){
         for(int i = 0; i < 16; i+=2){
           if(countSolutionsHelper(row + moves[i], col + moves[i+1], level + 1, solutions) > solutions){
-            solutions ++;
+            solutions = countSolutionsHelper(row + moves[i], col + moves[i+1], level + 1, solutions);
           }
           retract(row + moves[i], col + moves[i+1], level + 1);
         }
-        return solutions;
       }
+      //System.out.println("solutions 2");
+      //System.out.println("level:" + level);
+      return solutions;
     }
-    return solutions;
   }
 }
