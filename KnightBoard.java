@@ -144,7 +144,7 @@ public class KnightBoard{
     }
   }
 
-  private ArrayList<Integer> possibleMoves(int row, int col){
+  public ArrayList<Integer> possibleMoves(int row, int col){
     ArrayList<Integer> list = new ArrayList<Integer>();
     for(int i = 0; i < 16; i+=2){
       int newR = row + moves[i];
