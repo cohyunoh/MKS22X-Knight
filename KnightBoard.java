@@ -146,12 +146,12 @@ public class KnightBoard{
 
   private ArrayList<Integer> possibleMoves(int row, int col){
     ArrayList<Integer> list = new ArrayList<Integer>();
-    for(int i = 0; i < 16; i+=2){
-      int newR = row + moves[i];
-      int newC = col + moves[i + 1];
+    for(int i = 0; i < 8; i++){
+      int newR = row + moves[i * 2];
+      int newC = col + moves[i * 2 + 1];
       if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
-        list.add(moves[i]);
-        list.add(moves[i+1]);
+        list.add(moves[i * 2]);
+        list.add(moves[i * 2 + 1]);
       }
     }
     return list;
