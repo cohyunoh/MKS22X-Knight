@@ -175,22 +175,17 @@ public class KnightBoard{
     }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
-      data[startingRow][startingCol] = 1;
+      possibleMoves(startingRow, startingCol);
+      move(startingRow, startingCol, 1);
       return countSolutionsHelper(startingRow, startingCol, 2, 0);
     }
   }
 
   private int countSolutionsHelper(int row, int col, int level, int solutions){
     int newR, newC;
-    if(level == (Math.pow(data.length, 2))){
-      possibleMoves(row,col);
-      newR = outgoingMoves.get(0)[0];
-      newC = outgoingMoves.get(0)[1];
-      move(newR, newC, level);
+    if(level > (Math.pow(data.length, 2))){
       solutions ++;
       return solutions;
-    }else if(level == 1){
-      move(row,col,level);
     }else{
       possibleMoves(row,col);
       for(int i = 0; i < outgoingMoves.size(); i++){
@@ -203,6 +198,7 @@ public class KnightBoard{
         retract(newR, newC, level + 1);
       }
     }
+
     return solutions;
     /*
     if(level > data.length * data[row].length){
@@ -225,6 +221,13 @@ public class KnightBoard{
     */
   }
 
+  private void clear(){
+    for(int r = 0; r < data.length; r++){
+      for(int c = 0; c < data[r].length; c++){
+        data[r][c] = 0;
+      }
+    }
+  }
   public String printPoss(int row, int col){
     possibleMoves(row, col);
     String ans = "";
@@ -266,6 +269,7 @@ public class KnightBoard{
     }
     return list;
   }
+
   private void createOptData(){
     optData = new int[data.length][data[0].length];
     for(int r = 0; r < data.length; r++){
@@ -287,9 +291,4 @@ public class KnightBoard{
       }
     }
   }
-  /*
-  private ArrayList<Integer> orderList(int row, int col, ArrayList<Integer> list){
-    ArrayList<Integer> ans = new ArrayList<Integer>();
-
-  } */
 }
