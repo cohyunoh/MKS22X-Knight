@@ -195,8 +195,14 @@ public class KnightBoard{
         int greatestC = data[r].length - 1;
         if(r % greatestR == 0 && c % greatestC == 0){
           optData[r][c] = 2;
-        }else if((r % greatestR == 0 && c > 0 && c < greatestC) || (c % greatestC == 0 && r > 0 && r < greatestR)){
+        }else if((r % greatestR == 0 && c > 1 && c < greatestC - 1) || (c % greatestC == 0 && r > 1 && r < greatestR - 1)){
           optData[r][c] = 4;
+        }else if((c == 1 || c == greatestC - 1) && (r==1 || r == greatestR - 1)){
+          optData[r][c] = 4;
+        }else if(((r > 1 && r < greatestR - 1) && (c == 1 || c == greatestC - 1)) || ((c > 1 && c < greatestC - 1) && (r == 1 || r == greatestR - 1))){
+          optData[r][c] = 6;
+        }else if((r % greatestR == 0 && c == 1 || c == greatestC - 1) || (c % greatestC == 0 && r == 1 || r == greatestR - 1)){
+          optData[r][c] = 3;
         }
       }
     }
