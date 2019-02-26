@@ -3,7 +3,7 @@ public class KnightBoard{
   private int[][] data;
   private int[][] optData;
   private int[] moves = {-2,1,-1,2,1,2,2,1,2,-1,1,-2,-1,-2,-2,-1};
-  private int[][] outgoing;
+  private ArrayList<int[]> outgoingMoves;
 
   public KnightBoard(int l, int w){
     if(l <= 0 || w <= 0){
@@ -80,22 +80,37 @@ public class KnightBoard{
     }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
-      return solveH(startingRow, startingCol, 1);
+      possibleMoves(startingRow, startingCol);
+      move(startingRow, startingCol, 1);
+      return solveH(startingRow, startingCol, 2);
     }
   }
 
   private boolean move(int newR, int newC, int level){
     if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
       data[newR][newC] = level;
+      updateBoard(true);
       return true;
     }else{
       return false;
     }
   }
 
+  private void updateBoard(boolean mode){
+    for(int i = 0; i < outgoingMoves.size(); i++){
+      if(mode){
+        optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] --;
+      }else{
+        optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] ++;
+      }
+
+    }
+  }
+
   private boolean retract(int r, int c, int level){
     if (r >=0 && c >= 0 && r < data.length && c < data[r].length && data[r][c] == level){
       data[r][c] = 0;
+      updateBoard(false);
       return true;
     }else{
       return false;
@@ -103,28 +118,29 @@ public class KnightBoard{
   }
 
   private boolean solveH(int row ,int col, int level){
-    if(level > (data.length * data[0].length)){
+    if(level == (data.length * data[0].length)){
       return true;
-    }else{
-      if(move(row,col,level)){
-        ArrayList<int[]> newCoords = possibleMoves(row, col);
-        for(int i = 0; i < newCoords.size(); i+=2){
-          int newR = row + newCoords.get(i)[0];
-          int newC = col + newCoords.get(i)[1];
-          if(solveH(newR, newC, level + 1)){
-            return true;
-          }
+    }
+    possibleMoves(row, col);
+    System.out.println(printPoss(row,col));
+    for(int i = 0; i < outgoingMoves.size(); i++){
+      int newR = outgoingMoves.get(i)[0];
+      int newC = outgoingMoves.get(i)[1];
+      if(move(newR,newC,level)){
+        if(solveH(newR, newC, level + 1)){
+          return true;
+        }else{
           retract(newR, newC, level + 1);
         }
-        //System.out.println("false statement 1");
-        //System.out.println("level:" + level);
-        return false;
       }
     }
-    //System.out.println("false statement 2");
+    //System.out.println("false statement 1");
     //System.out.println("level:" + level);
     return false;
   }
+
+    //System.out.println("false statement 2");
+    //System.out.println("level:" + level);
 
   public int countSolutions(int startingRow, int startingCol){
     if(!isEmpty()){
@@ -142,10 +158,10 @@ public class KnightBoard{
       solutions ++;
       return solutions;
     }else{
-      ArrayList<int[]> newCoords = possibleMoves(row, col);
-      for(int i = 0; i < newCoords.size(); i+=2){
-        int newR = row + newCoords.get(i)[0];
-        int newC = col + newCoords.get(i)[1];
+      possibleMoves(row, col);
+      for(int i = 0; i < outgoingMoves.size(); i++){
+        int newR = outgoingMoves.get(i)[0];
+        int newC = outgoingMoves.get(i)[1];
         if(move(newR,newC,level+1)){
           if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
             solutions = countSolutionsHelper(newR,newC,level+1,solutions);
@@ -157,7 +173,19 @@ public class KnightBoard{
     }
   }
 
-  public ArrayList<int[]> possibleMoves(int row, int col){
+  public String printPoss(int row, int col){
+    possibleMoves(row, col);
+    String ans = "";
+    for(int i = 0; i < outgoingMoves.size(); i++){
+      ans += "[";
+      ans += outgoingMoves.get(i)[0] + " , ";
+      ans += outgoingMoves.get(i)[1] + "]";
+      ans += " , ";
+    }
+    return ans;
+  }
+
+  private void possibleMoves(int row, int col){
     ArrayList<int[]> list = new ArrayList<int[]>();
     for(int i = 0; i < 8; i++){
       int newR = row + moves[i * 2];
@@ -168,7 +196,7 @@ public class KnightBoard{
       }
     }
     list = organize(list);
-    return list;
+    outgoingMoves = list;
   }
 
   private ArrayList<int[]> organize(ArrayList<int[]> list){
