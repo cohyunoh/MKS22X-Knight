@@ -3,6 +3,7 @@ public class KnightBoard{
   private int[][] data;
   private int[][] optData;
   private int[] moves = {-2,1,-1,2,1,2,2,1,2,-1,1,-2,-1,-2,-2,-1};
+  private int[] outgoing;
 
   public KnightBoard(int l, int w){
     if(l <= 0 || w <= 0){
@@ -12,6 +13,18 @@ public class KnightBoard{
     createOptData();
   }
 
+  public String printOptData(){
+    String ans = "";
+    for(int r = 0; r < data.length; r++){
+      String line = "";
+      for(int c = 0; c < data[r].length; c++){
+        line += optData[r][c];
+      }
+      line += "\n";
+      ans += line;
+    }
+    return ans;
+  }
   public String toString(){
     String ans = "";
     if((data.length * data[0].length) % 10 == (data.length * data[0].length)){
@@ -146,14 +159,15 @@ public class KnightBoard{
 
   public ArrayList<Integer> possibleMoves(int row, int col){
     ArrayList<Integer> list = new ArrayList<Integer>();
-    for(int i = 0; i < 16; i+=2){
-      int newR = row + moves[i];
-      int newC = col + moves[i + 1];
+    for(int i = 0; i < 8; i++){
+      int newR = row + moves[i * 2];
+      int newC = col + moves[i * 2 + 1];
       if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
-        list.add(moves[i]);
-        list.add(moves[i+1]);
+        list.add(moves[i * 2]);
+        list.add(moves[i * 2 + 1]);
       }
     }
+
     return list;
   }
 
@@ -161,8 +175,11 @@ public class KnightBoard{
     optData = new int[data.length][data[0].length];
     for(int r = 0; r < data.length; r++){
       for(int c = 0; c < data[r].length; c++){
-        ArrayList<Integer> list = possibleMoves(r,c);
-        optData[r][c] = list.size();
+        optData[r][c] = 8;
+        int greatest = data.length - 1;
+        if((r==0 && (c == 0 || c == greatest)) || (r==greatest && (c == 0 || c == greatest))){
+          optData[r][c] = 2;
+        }else if()
       }
     }
   }
