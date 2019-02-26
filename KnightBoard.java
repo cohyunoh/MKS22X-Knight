@@ -107,10 +107,10 @@ public class KnightBoard{
       return true;
     }else{
       if(move(row,col,level)){
-        ArrayList<Integer> newCoords = possibleMoves(row, col);
+        ArrayList<int[]> newCoords = possibleMoves(row, col);
         for(int i = 0; i < newCoords.size(); i+=2){
-          int newR = row + newCoords.get(i);
-          int newC = col + newCoords.get(i + 1);
+          int newR = row + newCoords.get(i)[0];
+          int newC = col + newCoords.get(i)[1];
           if(solveH(newR, newC, level + 1)){
             return true;
           }
@@ -142,10 +142,10 @@ public class KnightBoard{
       solutions ++;
       return solutions;
     }else{
-      ArrayList<Integer> newCoords = possibleMoves(row, col);
+      ArrayList<int[]> newCoords = possibleMoves(row, col);
       for(int i = 0; i < newCoords.size(); i+=2){
-        int newR = row + newCoords.get(i);
-        int newC = col + newCoords.get(i + 1);
+        int newR = row + newCoords.get(i)[0];
+        int newC = col + newCoords.get(i)[1];
         if(move(newR,newC,level+1)){
           if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
             solutions = countSolutionsHelper(newR,newC,level+1,solutions);
@@ -157,20 +157,35 @@ public class KnightBoard{
     }
   }
 
-  public ArrayList<Integer> possibleMoves(int row, int col){
-    ArrayList<Integer> list = new ArrayList<Integer>();
+  public ArrayList<int[]> possibleMoves(int row, int col){
+    ArrayList<int[]> list = new ArrayList<int[]>();
     for(int i = 0; i < 8; i++){
       int newR = row + moves[i * 2];
       int newC = col + moves[i * 2 + 1];
       if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
-        list.add(moves[i * 2]);
-        list.add(moves[i * 2 + 1]);
+        int[] coord = {newR, newC};
+        list.add(coord);
       }
     }
-
+    list = organize(list);
     return list;
   }
 
+  private ArrayList<int[]> organize(ArrayList<int[]> list){
+    ArrayList<int[]> newList = new ArrayList<int[]>();
+    for(int i = 1; i < list.size(); i++){
+      for(int c = i - 1; c >=0; c--){
+        int value1 = optData[list.get(i)[0]][list.get(i)[1]];
+        int value2 = optData[list.get(c)[0]][list.get(c)[1]];
+        if(value2 > value1){
+          int[] coord = list.get(i);
+          list.remove(i);
+          list.add(c, coord);
+        }
+      }
+    }
+    return list;
+  }
   private void createOptData(){
     optData = new int[data.length][data[0].length];
     for(int r = 0; r < data.length; r++){
