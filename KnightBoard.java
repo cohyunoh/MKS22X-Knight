@@ -181,6 +181,30 @@ public class KnightBoard{
   }
 
   private int countSolutionsHelper(int row, int col, int level, int solutions){
+    int newR, newC;
+    if(level == (Math.pow(data.length, 2))){
+      possibleMoves(row,col);
+      newR = outgoingMoves.get(0)[0];
+      newC = outgoingMoves.get(0)[1];
+      move(newR, newC, level);
+      solutions ++;
+      return solutions;
+    }else if(level == 1){
+      move(row,col,level);
+    }else{
+      possibleMoves(row,col);
+      for(int i = 0; i < outgoingMoves.size(); i++){
+        newR = outgoingMoves.get(i)[0];
+        newC = outgoingMoves.get(i)[1];
+        move(newR, newC, level + 1);
+        if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
+          solutions = countSolutionsHelper(newR,newC,level+1,solutions);
+        }
+        retract(newR, newC, level + 1);
+      }
+    }
+    return solutions;
+    /*
     if(level > data.length * data[row].length){
       solutions ++;
       return solutions;
@@ -192,13 +216,13 @@ public class KnightBoard{
         if(move(newR,newC,level)){
           if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
             solutions = countSolutionsHelper(newR,newC,level+1,solutions);
-          }else{
-            retract(newR,newC,level+1);
           }
+          retract(newR,newC,level+1);
         }
       }
       return solutions;
     }
+    */
   }
 
   public String printPoss(int row, int col){
