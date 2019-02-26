@@ -89,6 +89,7 @@ public class KnightBoard{
   private boolean move(int newR, int newC, int level){
     if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
       data[newR][newC] = level;
+      possibleMoves(newR,newC);
       updateBoard(true);
       return true;
     }else{
@@ -110,6 +111,7 @@ public class KnightBoard{
   private boolean retract(int r, int c, int level){
     if (r >=0 && c >= 0 && r < data.length && c < data[r].length && data[r][c] == level){
       data[r][c] = 0;
+      possibleMoves(r,c);
       updateBoard(false);
       return true;
     }else{
@@ -118,6 +120,30 @@ public class KnightBoard{
   }
 
   private boolean solveH(int row ,int col, int level){
+    int newR, newC;
+    if(level == (Math.pow(data.length, 2))){
+      possibleMoves(row,col);
+      newR = outgoingMoves.get(0)[0];
+      newC = outgoingMoves.get(0)[1];
+      move(newR, newC, level);
+      return true;
+    }else if(level == 1){
+      move(row,col,level);
+    }else{
+      possibleMoves(row,col);
+      for(int i = 0; i < outgoingMoves.size(); i++){
+        newR = outgoingMoves.get(i)[0];
+        newC = outgoingMoves.get(i)[1];
+        move(newR, newC, level + 1);
+        if(solveH(newR, newC, level + 1)){
+          return true;
+        }else{
+          retract(newR, newC, level + 1);
+        }
+      }
+    }
+    return false;
+    /*
     if(level == (data.length * data[0].length)){
       return true;
     }
@@ -129,12 +155,15 @@ public class KnightBoard{
       move(newR,newC,level);
       if(solveH(newR, newC, level + 1)){
         return true;
+      }else{
+        retract(newR, newC, level);
       }
-      retract(newR, newC, level);
+
     }
     //System.out.println("false statement 1");
     //System.out.println("level:" + level);
     return false;
+    */
   }
 
     //System.out.println("false statement 2");
