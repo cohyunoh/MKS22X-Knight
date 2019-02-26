@@ -3,7 +3,7 @@ public class KnightBoard{
   private int[][] data;
   private int[][] optData;
   private int[] moves = {-2,1,-1,2,1,2,2,1,2,-1,1,-2,-1,-2,-2,-1};
-  private int[] outgoing;
+  private int[][] outgoing;
 
   public KnightBoard(int l, int w){
     if(l <= 0 || w <= 0){
@@ -18,7 +18,7 @@ public class KnightBoard{
     for(int r = 0; r < data.length; r++){
       String line = "";
       for(int c = 0; c < data[r].length; c++){
-        line += optData[r][c];
+        line += optData[r][c] + " ";
       }
       line += "\n";
       ans += line;
@@ -176,10 +176,13 @@ public class KnightBoard{
     for(int r = 0; r < data.length; r++){
       for(int c = 0; c < data[r].length; c++){
         optData[r][c] = 8;
-        int greatest = data.length - 1;
-        if((r==0 && (c == 0 || c == greatest)) || (r==greatest && (c == 0 || c == greatest))){
+        int greatestR = data.length - 1;
+        int greatestC = data[r].length - 1;
+        if(r % greatestR == 0 && c % greatestC == 0){
           optData[r][c] = 2;
-        }else if()
+        }else if((r % greatestR == 0 && c > 0 && c < greatestC) || (c % greatestC == 0 && r > 0 && r < greatestR)){
+          optData[r][c] = 4;
+        }
       }
     }
   }
