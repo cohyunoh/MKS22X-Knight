@@ -99,9 +99,9 @@ public class KnightBoard{
   private void updateBoard(boolean mode){
     for(int i = 0; i < outgoingMoves.size(); i++){
       if(mode){
-        optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] --;
+        optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] = optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] - 1;
       }else{
-        optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] ++;
+        optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] = optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] + 1;
       }
 
     }
@@ -126,13 +126,11 @@ public class KnightBoard{
     for(int i = 0; i < outgoingMoves.size(); i++){
       int newR = outgoingMoves.get(i)[0];
       int newC = outgoingMoves.get(i)[1];
-      if(move(newR,newC,level)){
-        if(solveH(newR, newC, level + 1)){
-          return true;
-        }else{
-          retract(newR, newC, level + 1);
-        }
+      move(newR,newC,level);
+      if(solveH(newR, newC, level + 1)){
+        return true;
       }
+      retract(newR, newC, level);
     }
     //System.out.println("false statement 1");
     //System.out.println("level:" + level);
@@ -162,11 +160,12 @@ public class KnightBoard{
       for(int i = 0; i < outgoingMoves.size(); i++){
         int newR = outgoingMoves.get(i)[0];
         int newC = outgoingMoves.get(i)[1];
-        if(move(newR,newC,level+1)){
+        if(move(newR,newC,level)){
           if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
             solutions = countSolutionsHelper(newR,newC,level+1,solutions);
+          }else{
+            retract(newR,newC,level+1);
           }
-          retract(newR,newC,level+1);
         }
       }
       return solutions;
