@@ -13,7 +13,7 @@ public class KnightBoard{
     createOptData();
   }
 
-  public String printOptData(){
+  private String printOptData(){
     String ans = "";
     for(int r = 0; r < data.length; r++){
       String line = "";
@@ -25,6 +25,7 @@ public class KnightBoard{
     }
     return ans;
   }
+
   public String toString(){
     String ans = "";
     if((data.length * data[0].length) % 10 == (data.length * data[0].length)){
@@ -161,7 +162,6 @@ public class KnightBoard{
     }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
-      possibleMoves(startingRow, startingCol);
       move(startingRow, startingCol, 1);
       return countSolutionsHelper(startingRow, startingCol, 2, 0);
     }
@@ -169,23 +169,23 @@ public class KnightBoard{
 
   private int countSolutionsHelper(int row, int col, int level, int solutions){
     int newR, newC;
-    if(level > (Math.pow(data.length, 2))){
+    if(level > data.length * data[0].length){
       solutions ++;
       return solutions;
     }else{
-      possibleMoves(row,col);
-      for(int i = 0; i < outgoingMoves.size(); i++){
-        newR = outgoingMoves.get(i)[0];
-        newC = outgoingMoves.get(i)[1];
-        move(newR, newC, level + 1);
-        if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
-          solutions = countSolutionsHelper(newR,newC,level+1,solutions);
+      ArrayList<int[]> moves = possibleMoves(row,col);
+      for(int i = 0; i < moves.size(); i++){
+        newR = moves.get(i)[0];
+        newC = moves.get(i)[1];
+        if(move(newR, newC, level)){
+          if(countSolutionsHelper(newR, newC, level + 1, solutions) > solutions){
+            solutions = countSolutionsHelper(newR, newC, level + 1, solutions);
+          }
+          retract(newR, newC, level);
         }
-        retract(newR, newC, level + 1);
       }
+      return solutions;
     }
-
-    return solutions;
     /*
     if(level > data.length * data[row].length){
       solutions ++;
