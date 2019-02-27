@@ -80,9 +80,8 @@ public class KnightBoard{
     }else if(startingRow < 0 || startingRow >= data.length || startingCol < 0 || startingCol >= data[0].length){
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
-      possibleMoves(startingRow, startingCol);
-      move(startingRow, startingCol, 1);
-      return solveH(startingRow, startingCol, 1);
+      move(startingRow,startingCol,1);
+      return solveH(startingRow, startingCol, 2);
     }
   }
 
@@ -121,6 +120,24 @@ public class KnightBoard{
 
   private boolean solveH(int row ,int col, int level){
     int newR, newC;
+    if(level > data.length * data[0].length){
+      return true;
+    }else{
+      ArrayList<int[]> moves = possibleMoves(row,col);
+      for(int i = 0; i < moves.size(); i++){
+        newR = moves.get(i)[0];
+        newC = moves.get(i)[1];
+        if(move(newR, newC, level)){
+          if(solveH(newR, newC, level + 1)){
+            return true;
+          }else{
+            retract(newR, newC, level);
+          }
+        }
+      }
+      return false;
+    }
+    /*
     if(level > (Math.pow(data.length, 2))){
       return true;
     }else{
@@ -137,6 +154,7 @@ public class KnightBoard{
       }
     }
     return false;
+    */
     /*
     if(level == (data.length * data[0].length)){
       return true;
