@@ -186,25 +186,6 @@ public class KnightBoard{
       }
       return solutions;
     }
-    /*
-    if(level > data.length * data[row].length){
-      solutions ++;
-      return solutions;
-    }else{
-      possibleMoves(row, col);
-      for(int i = 0; i < outgoingMoves.size(); i++){
-        int newR = outgoingMoves.get(i)[0];
-        int newC = outgoingMoves.get(i)[1];
-        if(move(newR,newC,level)){
-          if(countSolutionsHelper(newR,newC,level+1,solutions) > solutions){
-            solutions = countSolutionsHelper(newR,newC,level+1,solutions);
-          }
-          retract(newR,newC,level+1);
-        }
-      }
-      return solutions;
-    }
-    */
   }
 
   private void clear(){
