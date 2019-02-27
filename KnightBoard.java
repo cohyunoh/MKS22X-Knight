@@ -81,14 +81,23 @@ public class KnightBoard{
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
       move(startingRow,startingCol,1);
-      return solveH(startingRow, startingCol, 2);
+      if(solveH(startingRow, startingCol, 2)){
+        return true;
+      }else{
+        clear();
+        return false;
+      }
     }
   }
 
   private boolean move(int newR, int newC, int level){
+    //check if r and c are viable and the spot we are moving to is not taken
     if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
+      //set that coordinate to the level
       data[newR][newC] = level;
+      //get the outgoing moves since all of them store newR and newC as an outgoing move
       outgoingMoves = possibleMoves(newR,newC);
+      //subtract one viable move from all of them
       updateBoard(true);
       return true;
     }else{
@@ -99,8 +108,10 @@ public class KnightBoard{
   private void updateBoard(boolean mode){
     for(int i = 0; i < outgoingMoves.size(); i++){
       if(mode){
+        //takes away one viable move from outgoing spots
         optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] = optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] - 1;
       }else{
+        //adds back one viable move to outgoing spots
         optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] = optData[outgoingMoves.get(i)[0]][outgoingMoves.get(i)[1]] + 1;
       }
 
@@ -108,9 +119,13 @@ public class KnightBoard{
   }
 
   private boolean retract(int r, int c, int level){
+    //check if r and c are viable and the spot we are retracting from has the level we want to revoke
     if (r >=0 && c >= 0 && r < data.length && c < data[r].length && data[r][c] == level){
+      //revoke the level
       data[r][c] = 0;
+      //get the outgoing coordinates since they also stored r,c as an outgoing coordinate
       outgoingMoves = possibleMoves(r,c);
+      //add one all those outgoing coordinates
       updateBoard(false);
       return true;
     }else{
@@ -137,49 +152,8 @@ public class KnightBoard{
       }
       return false;
     }
-    /*
-    if(level > (Math.pow(data.length, 2))){
-      return true;
-    }else{
-      outgoingMoves = possibleMoves(row,col);
-      for(int i = 0; i < outgoingMoves.size(); i++){
-        newR = outgoingMoves.get(i)[0];
-        newC = outgoingMoves.get(i)[1];
-        move(newR, newC, level + 1);
-        if(solveH(newR, newC, level + 1)){
-          return true;
-        }else{
-          retract(newR, newC, level + 1);
-        }
-      }
-    }
-    return false;
-    */
-    /*
-    if(level == (data.length * data[0].length)){
-      return true;
-    }
-    possibleMoves(row, col);
-    System.out.println(printPoss(row,col));
-    for(int i = 0; i < outgoingMoves.size(); i++){
-      int newR = outgoingMoves.get(i)[0];
-      int newC = outgoingMoves.get(i)[1];
-      move(newR,newC,level);
-      if(solveH(newR, newC, level + 1)){
-        return true;
-      }else{
-        retract(newR, newC, level);
-      }
-
-    }
-    //System.out.println("false statement 1");
-    //System.out.println("level:" + level);
-    return false;
-    */
   }
 
-    //System.out.println("false statement 2");
-    //System.out.println("level:" + level);
 
   public int countSolutions(int startingRow, int startingCol){
     if(!isEmpty()){
