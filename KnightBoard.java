@@ -82,14 +82,14 @@ public class KnightBoard{
     }else{
       possibleMoves(startingRow, startingCol);
       move(startingRow, startingCol, 1);
-      return solveH(startingRow, startingCol, 2);
+      return solveH(startingRow, startingCol, 1);
     }
   }
 
   private boolean move(int newR, int newC, int level){
     if (newR >=0 && newC >= 0 && newR < data.length && newC < data[newR].length && data[newR][newC] == 0){
       data[newR][newC] = level;
-      possibleMoves(newR,newC);
+      outgoingMoves = possibleMoves(newR,newC);
       updateBoard(true);
       return true;
     }else{
@@ -111,7 +111,7 @@ public class KnightBoard{
   private boolean retract(int r, int c, int level){
     if (r >=0 && c >= 0 && r < data.length && c < data[r].length && data[r][c] == level){
       data[r][c] = 0;
-      possibleMoves(r,c);
+      outgoingMoves = possibleMoves(r,c);
       updateBoard(false);
       return true;
     }else{
@@ -121,16 +121,10 @@ public class KnightBoard{
 
   private boolean solveH(int row ,int col, int level){
     int newR, newC;
-    if(level == (Math.pow(data.length, 2))){
-      possibleMoves(row,col);
-      newR = outgoingMoves.get(0)[0];
-      newC = outgoingMoves.get(0)[1];
-      move(newR, newC, level);
+    if(level > (Math.pow(data.length, 2))){
       return true;
-    }else if(level == 1){
-      move(row,col,level);
     }else{
-      possibleMoves(row,col);
+      outgoingMoves = possibleMoves(row,col);
       for(int i = 0; i < outgoingMoves.size(); i++){
         newR = outgoingMoves.get(i)[0];
         newC = outgoingMoves.get(i)[1];
@@ -240,7 +234,7 @@ public class KnightBoard{
     return ans;
   }
 
-  private void possibleMoves(int row, int col){
+  private ArrayList<int[]> possibleMoves(int row, int col){
     ArrayList<int[]> list = new ArrayList<int[]>();
     for(int i = 0; i < 8; i++){
       int newR = row + moves[i * 2];
@@ -251,7 +245,7 @@ public class KnightBoard{
       }
     }
     list = organize(list);
-    outgoingMoves = list;
+    return list;
   }
 
   private ArrayList<int[]> organize(ArrayList<int[]> list){
