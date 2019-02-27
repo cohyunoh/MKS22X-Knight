@@ -163,28 +163,32 @@ public class KnightBoard{
       throw new IllegalArgumentException("The Coordinates Given are Not on the Boundaries of the Board");
     }else{
       move(startingRow, startingCol, 1);
-      return countSolutionsHelper(startingRow, startingCol, 2, 0);
+      int num = countSolutionsHelper(startingRow, startingCol, 2, 0);
+      clear();
+      return num;
     }
   }
 
-  private int countSolutionsHelper(int row, int col, int level, int solutions){
+  private int countSolutionsHelper(int row, int col, int level, int ans){
     int newR, newC;
     if(level > data.length * data[0].length){
-      solutions ++;
-      return solutions;
+      ans ++;
+      return ans;
     }else{
       ArrayList<int[]> moves = possibleMoves(row,col);
+      //System.out.println(printPoss(moves));
       for(int i = 0; i < moves.size(); i++){
         newR = moves.get(i)[0];
         newC = moves.get(i)[1];
         if(move(newR, newC, level)){
-          if(countSolutionsHelper(newR, newC, level + 1, solutions) > solutions){
-            solutions = countSolutionsHelper(newR, newC, level + 1, solutions);
+          int num = countSolutionsHelper(newR, newC, level + 1, ans);
+          if(num > ans){
+            ans = num;
           }
           retract(newR, newC, level);
         }
       }
-      return solutions;
+      return ans;
     }
   }
 
@@ -195,8 +199,7 @@ public class KnightBoard{
       }
     }
   }
-  public String printPoss(int row, int col){
-    possibleMoves(row, col);
+  private String printPoss(ArrayList<int[]> inpt){
     String ans = "";
     for(int i = 0; i < outgoingMoves.size(); i++){
       ans += "[";
